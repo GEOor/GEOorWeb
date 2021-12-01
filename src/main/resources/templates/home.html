@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title>GeoOrWeb</title>
+    <style>
+        .map_wrap {width: 100%;position: relative;}
+        .modes {position: absolute;top: 10px;left: 10px;z-index: 1;}
+        .edit {position: absolute;top: 62px;left: 10px;z-index: 1;}
+        #drawingMap {width: 1000px; height: 800px;}
+    </style>
 </head>
 <body>
-  <h1>hello</h1>
+    <div class="map_wrap">
+        <div id="drawingMap"></div>
+        <p class="modes">
+            <button onclick="selectOverlay('MARKER')">마커</button>
+            <button onclick="selectOverlay('POLYLINE')">선</button>
+            <button onclick="selectOverlay('CIRCLE')">원</button>
+            <button onclick="selectOverlay('RECTANGLE')">사각형</button>
+            <button onclick="selectOverlay('POLYGON')">다각형</button>
+        </p>
+        <p class="edit">
+            <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
+            <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
+        </p>
+        <!--<p class="getdata">
+            <button onclick="getDataFromDrawingMap()">가져오기</button>
+        </p>-->
+        <p class = "getData">
+            <button onclick="pointsToPath()">정보 가져오기</button>
+        </p>
+    </div>
+    <div id="clickLatlng"></div>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=drawing"></script>
+    <script type="text/javascript" src="js/viewMap.js"></script>
 </body>
 </html>
