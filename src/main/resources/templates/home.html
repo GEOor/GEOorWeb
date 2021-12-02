@@ -24,14 +24,15 @@
             <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
             <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
         </p>
-        <!--<p class="getdata">
-            <button onclick="getDataFromDrawingMap()">가져오기</button>
-        </p>-->
-        <p class = "getData">
-            <button onclick="pointsToPath()">정보 가져오기</button>
-        </p>
     </div>
-    <div id="clickLatlng"></div>
+    <form method="get" action="/getLatLng" id="getData">
+        <p>시작점 위도 <input type="text" name="sLat" id="sLat"></p>
+        <p>시작점 경도 <input type="text" name="sLng" id="sLng"></p>
+        <p>종료점 위도 <input type="text" name="eLat" id="eLat"></p>
+        <p>종료점 경도 <input type="text" name="eLng" id="eLng"></p>
+        <p><input type="submit" value="HillShade 알고리즘 수행"></p>
+    </form>
+    <!--<div id="clickLatlng"></div>-->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=drawing"></script>
     <script type="text/javascript" src="js/viewMap.js"></script>
 </body>
