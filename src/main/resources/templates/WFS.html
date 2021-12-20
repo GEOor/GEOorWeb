@@ -34,6 +34,7 @@
     });
 
     var vector = new ol.layer.Vector({
+        className: "wfsLayer",
         source: vectorSource,
         style: new ol.style.Style({
             stroke: new ol.style.Stroke({
@@ -66,8 +67,19 @@
         var features = vectorSource.getFeatures();
         console.log(features);
         console.log(features[0]['values_']);
+        var style = new ol.style.Style({
+            stroke: new ol.style.Stroke({color: '#d80303'}),
+            fill: new ol.style.Fill({color: '#d80303'})
+        });
+        features[0].setStyle(style);
+        features[1].setStyle(style);
+        features[2].setStyle(style);
+        features[3].setStyle(style);
+        features[4].setStyle(style);
+        features[5].setStyle(style);
         // console.log(vectorSource.getFeaturesCollection()); == null
-        // map.addLayer(vector);
+        map.removeLayer(vector);
+        map.addLayer(vector);
     }
 
 </script>
