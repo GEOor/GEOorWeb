@@ -1,39 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>GeoOrWeb</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/css/ol.css">
     <style>
-        .map_wrap {width: 100%;position: relative;}
-        .modes {position: absolute;top: 10px;left: 10px;z-index: 1;}
-        .edit {position: absolute;top: 62px;left: 10px;z-index: 1;}
-        #drawingMap {width: 1000px; height: 800px;}
+        #map {
+            height: 1200px;
+            width: 100%;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js"></script>
+    <title>GEOorWeb</title>
 </head>
 <body>
-    <div class="map_wrap">
-        <div id="drawingMap"></div>
-        <p class="modes">
-            <button onclick="selectOverlay('MARKER')">마커</button>
-            <button onclick="selectOverlay('POLYLINE')">선</button>
-            <button onclick="selectOverlay('CIRCLE')">원</button>
-            <button onclick="selectOverlay('RECTANGLE')">사각형</button>
-            <button onclick="selectOverlay('POLYGON')">다각형</button>
-        </p>
-        <p class="edit">
-            <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
-            <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
-        </p>
+    <h2>OpenLayers_MAP</h2>
+    <div id="map" ></div>
+    <script type="text/javascript">
+
+        // vworld 배경 지도 띄우기
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.XYZ({
+                        //Vworld Tile 변경
+                        url: 'http://xdworld.vworld.kr:8080/2d/Base/202002/{z}/{x}/{y}.png'
+                    })
+                }),
+            ],
+            view: new ol.View({
+                center: [14126669.41589247, 4493404.190498611],
+                zoom: 7,
+                minZoom: 7,
+                maxZoom: 19
+            })
+        });
+
+        var layer = new ol.layer.Tile({
+            visible: true,
+            source: new ol.source.TileWMS({
+                url: 'http://localhost:8088/geoserver/GeoOr/wms',
+                params: {
+                    'FORMAT':'image/png',
+                    tiled: true,
+                    "LAYERS": 'PostGis_SHP'
+                }
+            })
+        })
+
+        function addLayer(){
+            map.addLayer(layer);
+        }
+    </script>
+    <div>
+        <button type="button" onclick="javascript:addLayer();" name="WMS" >testWMS</button>
     </div>
-    <form method="get" action="/getLatLng" id="getData">
-        <p>시작점 위도 <input type="text" name="sLat" id="sLat"></p>
-        <p>시작점 경도 <input type="text" name="sLng" id="sLng"></p>
-        <p>종료점 위도 <input type="text" name="eLat" id="eLat"></p>
-        <p>종료점 경도 <input type="text" name="eLng" id="eLng"></p>
-        <p><input type="submit" value="HillShade 알고리즘 수행"></p>
-    </form>
-    <!--<div id="clickLatlng"></div>-->
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=drawing"></script>
-    <script type="text/javascript" src="js/viewMap.js"></script>
 </body>
 </html>
