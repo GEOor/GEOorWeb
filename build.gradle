@@ -14,18 +14,28 @@ configurations {
 	}
 }
 
+
 repositories {
+	maven { url "https://repo.osgeo.org/repository/release/"}
 	mavenCentral()
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.seleniumhq.selenium:selenium-java:2.41.0'
+	testImplementation 'org.geotools.jdbc:gt-jdbc-postgis:26.1'
+	implementation 'org.geotools:gt-shapefile:26.1'
+	implementation 'org.geotools:gt-epsg-hsql:26.1'
+	implementation 'org.geotools:gt-swing:26.1'
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+
+
 
 test {
 	useJUnitPlatform()

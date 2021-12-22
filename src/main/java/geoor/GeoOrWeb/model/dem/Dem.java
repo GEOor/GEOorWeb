@@ -107,7 +107,7 @@ public class Dem {
 				double y = arrY.get(col*i + j);
 				double z = arrZ.get(col*i + j);
 				tf.setX(y); tf.setY(x); tf.transform();
-				// System.out.println(x + " " + y + " " + tf.getLatitude() + " " + tf.getLongitude());
+				//System.out.println(x + " " + y + " " + tf.getLatitude() + " " + tf.getLongitude());
 				temp.add(new DemInfo(x, y, z, tf.getLatitude(), tf.getLongitude()));
 			}
 			tempArr.add(temp);
