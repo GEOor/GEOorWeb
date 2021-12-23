@@ -15,7 +15,10 @@ configurations {
 }
 
 repositories {
+	maven { url "https://repo.osgeo.org/repository/release/" }
+	maven { url "https://repo.osgeo.org/repository/snapshot/" }
 	mavenCentral()
+
 }
 
 dependencies {
@@ -25,6 +28,9 @@ dependencies {
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation group: 'org.geotools', name: 'gt-epsg-hsql', version: '27-SNAPSHOT'
+	implementation group: 'org.geotools', name: 'gt-shapefile', version: '27-SNAPSHOT'
+	implementation group: 'org.geotools', name: 'gt-main', version: '27-SNAPSHOT'
 }
 
 test {
