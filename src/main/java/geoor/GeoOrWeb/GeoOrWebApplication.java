@@ -29,12 +29,12 @@ public class GeoOrWebApplication {
 
 	public static void main(String[] args) {
 
-		try {
+/*		try {
 			shpService.demMapping();
 //			shpService.init();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		}*/
 
 		/**
 		 dem api 호출 부분
