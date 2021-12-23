@@ -40,24 +40,32 @@ public class GeoOrWebApplication {
 		 3) 변환된 위,경도를 크롤러를 이용해 고도각으로 변환
 		 4) 변환된 고도각을 똑같이 2차원 SunInfo ArrayList의 사각형에 위치한 곳으로 모두 채운다.
 		 */
-		int k = 2; //k등분으로 태양고도각 크롤링 (크롤링 횟수 조절을 위함)
-		int t = 9; //태양고도각 시각 (0 ~ 23 사이 정수만 가능함)
-		sun.run(demArr.get(0).getArr(), k, t);
+		ArrayList<Hillshade> hillshadeArr = new ArrayList<Hillshade>();
+		for(int i=0; i<demArr.size(); i++) {
+			int k = 2; //k등분으로 태양고도각 크롤링 (크롤링 횟수 조절을 위함)
+			int t = 9; //태양고도각 시각 (0 ~ 23 사이 정수만 가능함)
+			sun.run(demArr.get(i).getArr(), k, t);
 
-		//System.out.println(sun.get().toString()); // 테스트 코드
+			//System.out.println(sun.get().toString()); // 테스트 코드
 
-		/**
-		 2021-11-22
-		 작성자 : 천수환
-		 내용 : HillshadeAlgorithm 사용 부분
-		 사용 방법
-		 1) HillshadeAlgorithm 클래스 선언 (hs)
-		 2) hsConverter 함수에 태양 고도각, dem값을 넣는다. (둘다 2차원 ArrayList)
-		 3) 리턴된 값은 해당 dem 격자의 음영기복도(hillshade)값이 된다. * 테두리 제외
-		 */
-		HillshadeAlgorithm hs = new HillshadeAlgorithm();
-		ArrayList<ArrayList<Hillshade>> hsArr = hs.hsConverter(sun.get(), demArr.get(0).getArr());
-		System.out.println(hsArr.toString()); // 테스트 코드
+			/**
+			 2021-11-22
+			 작성자 : 천수환
+			 내용 : HillshadeAlgorithm 사용 부분
+			 사용 방법
+			 1) HillshadeAlgorithm 클래스 선언 (hs)
+			 2) hsConverter 함수에 태양 고도각, dem값을 넣는다. (둘다 2차원 ArrayList)
+			 3) 리턴된 값은 해당 dem 격자의 음영기복도(hillshade)값이 된다. * 테두리 제외
+			 */
+			HillshadeAlgorithm hs = new HillshadeAlgorithm();
+			ArrayList<ArrayList<Hillshade>> hs2DArr = hs.hsConverter(sun.get(), demArr.get(i).getArr());
+
+			for (ArrayList<Hillshade> row : hs2DArr) {
+				hillshadeArr.addAll(row);
+			}
+		}
+
+		System.out.println(hillshadeArr.toString()); // 테스트 코드
 
 		SpringApplication.run(GeoOrWebApplication.class, args);
 	}
