@@ -59,6 +59,13 @@ public class ShpService {
         }
     }
 
+    public void demMapping() throws SQLException {
+        try (Connection conn = jdbcTemplate.getConnection()) {
+            shpRepository.findOverlapPolygon(conn);
+            conn.commit();
+        }
+    }
+
     public void test() {
         ConvertSRID convertSRID = new ConvertSRID();
         try {

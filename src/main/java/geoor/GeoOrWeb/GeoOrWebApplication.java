@@ -1,5 +1,6 @@
 package geoor.GeoOrWeb;
 
+import geoor.GeoOrWeb.algorithm.coordinate.MakePolygon;
 import geoor.GeoOrWeb.algorithm.coordinate.TransformCoordinate;
 import geoor.GeoOrWeb.algorithm.hillshade.HillshadeAlgorithm;
 import geoor.GeoOrWeb.config.ApplicationProperties;
@@ -8,6 +9,7 @@ import geoor.GeoOrWeb.model.hillshade.Hillshade;
 import geoor.GeoOrWeb.service.DemService;
 import geoor.GeoOrWeb.service.ShpService;
 import geoor.GeoOrWeb.service.SunService;
+import org.opengis.referencing.operation.TransformException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -28,9 +30,10 @@ public class GeoOrWebApplication {
 	public static void main(String[] args) {
 
 		try {
-			shpService.init();
-		} catch (SQLException throwables) {
-			throwables.printStackTrace();
+			shpService.demMapping();
+//			shpService.init();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
 		/**
