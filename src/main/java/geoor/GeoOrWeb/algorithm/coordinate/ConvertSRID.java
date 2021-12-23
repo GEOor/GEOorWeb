@@ -1,9 +1,11 @@
-package geoor.GeoOrWeb.shp;
+package geoor.GeoOrWeb.algorithm.coordinate;
 
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.referencing.CRS;
-import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -31,6 +33,15 @@ public class ConvertSRID {
     public Point convertPoint(double longitude, double latitude) throws TransformException {
         DirectPosition2D source = new DirectPosition2D(sourceCrs, longitude, latitude);
         DirectPosition target = new DirectPosition2D(targetCrs);
+        engine.transform(source, target);
+        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
+        Coordinate coord = new Coordinate(target.getCoordinate()[0], target.getCoordinate()[1]);
+        return geometryFactory.createPoint(coord);
+    }
+
+    public Point revertPoint(double longitude, double latitude) throws TransformException {
+        DirectPosition2D source = new DirectPosition2D(targetCrs, longitude, latitude);
+        DirectPosition target = new DirectPosition2D(sourceCrs);
         engine.transform(source, target);
         GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
         Coordinate coord = new Coordinate(target.getCoordinate()[0], target.getCoordinate()[1]);
