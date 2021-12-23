@@ -1,15 +1,19 @@
 package geoor.GeoOrWeb;
 
+import geoor.GeoOrWeb.algorithm.coordinate.MakePolygon;
 import geoor.GeoOrWeb.algorithm.coordinate.TransformCoordinate;
 import geoor.GeoOrWeb.algorithm.hillshade.HillshadeAlgorithm;
 import geoor.GeoOrWeb.config.ApplicationProperties;
 import geoor.GeoOrWeb.model.dem.Dem;
 import geoor.GeoOrWeb.model.hillshade.Hillshade;
 import geoor.GeoOrWeb.service.DemService;
+import geoor.GeoOrWeb.service.ShpService;
 import geoor.GeoOrWeb.service.SunService;
+import org.opengis.referencing.operation.TransformException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 @SpringBootApplication
@@ -20,9 +24,17 @@ public class GeoOrWebApplication {
 
 	private static DemService demService = new DemService();
 	private static SunService sun = new SunService();
+	private static ShpService shpService = new ShpService();
 	private static TransformCoordinate tf;
 
 	public static void main(String[] args) {
+
+		try {
+			shpService.demMapping();
+//			shpService.init();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		/**
 		 dem api 호출 부분
