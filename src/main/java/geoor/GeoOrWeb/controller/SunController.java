@@ -29,6 +29,9 @@ public class SunController {
 
     public void cutSquare(ArrayList<ArrayList<DemInfo>> dem, int num, int time){
 
+        sunInfoArr = new ArrayList<ArrayList<SunInfo>>();
+
+        //dem 크기만큼 빈 배열 만들어두기
         for(int i=0; i<dem.size(); i++){
             ArrayList<SunInfo> resize = new ArrayList<SunInfo>();
             for(int j=0; j<dem.get(i).size(); j++){
@@ -38,14 +41,19 @@ public class SunController {
             sunInfoArr.add(resize);
         }
 
+        System.out.println("dem 크기" + "y: " + dem.get(0).size() + "x: " + dem.size());
+        System.out.println("suninfo 크기" + "y: " + sunInfoArr.get(0).size() + "x: " + sunInfoArr.size());
+
         TransformCoordinate tf;
 
+        //단위 분배. num : 자르고 싶은 개수
         int unit_x = (dem.size() / num), unit_y = (dem.get(0).size() / num); //num등분 단위
         int pre_x = 0, pre_y = 0; //이전 index
 
         for(int i=0; i<num; i++){
             for(int j=0; j<num; j++){
 
+                //가운데 부분
                 int index_x = (i * unit_x + (i + 1) * unit_x) / 2;
                 int index_y = (j * unit_y + (j + 1) * unit_y) / 2;
                 double dem_x = dem.get(index_x).get(index_y).getX();
@@ -61,6 +69,7 @@ public class SunController {
                 index_x = dem.size() / (i + 1); index_y = dem.get(0).size() / (j + 1);
                 if(i == num - 1) index_x = dem.size();
                 if(j == num - 1) index_y = dem.get(0).size();
+
 
                 for(int x=pre_x; x<index_x; x++){
                     for(int y=pre_y; y<index_y;y++){
