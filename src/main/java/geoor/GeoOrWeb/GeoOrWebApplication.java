@@ -1,6 +1,5 @@
 package geoor.GeoOrWeb;
 
-import geoor.GeoOrWeb.algorithm.coordinate.MakePolygon;
 import geoor.GeoOrWeb.algorithm.coordinate.TransformCoordinate;
 import geoor.GeoOrWeb.algorithm.hillshade.HillshadeAlgorithm;
 import geoor.GeoOrWeb.config.ApplicationProperties;
@@ -9,7 +8,6 @@ import geoor.GeoOrWeb.model.hillshade.Hillshade;
 import geoor.GeoOrWeb.service.DemService;
 import geoor.GeoOrWeb.service.ShpService;
 import geoor.GeoOrWeb.service.SunService;
-import org.opengis.referencing.operation.TransformException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -28,13 +26,6 @@ public class GeoOrWebApplication {
 	private static TransformCoordinate tf;
 
 	public static void main(String[] args) {
-
-/*		try {
-			shpService.demMapping();
-//			shpService.init();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}*/
 
 		/**
 		 dem api 호출 부분
@@ -77,7 +68,15 @@ public class GeoOrWebApplication {
 			}
 		}
 
-		System.out.println(hillshadeArr.toString()); // 테스트 코드
+//		System.out.println(hillshadeArr.toString()); // 테스트 코드
+
+		try {
+			shpService.init();
+			// 아래 메소드는 수행하는데 3분정도 소모됨
+			shpService.demMapping(hillshadeArr);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		SpringApplication.run(GeoOrWebApplication.class, args);
 	}

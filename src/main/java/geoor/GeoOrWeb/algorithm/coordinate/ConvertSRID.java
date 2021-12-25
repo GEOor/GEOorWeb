@@ -1,11 +1,8 @@
 package geoor.GeoOrWeb.algorithm.coordinate;
 
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -28,34 +25,21 @@ public class ConvertSRID {
         } catch (FactoryException e) {
             e.printStackTrace();
         }
-        // X 좌표가 먼저 오도록 설정. 즉, longitude 먼저 나온다.
-        System.setProperty("org.geotools.referencing.forceXY", "true");
-    }
-
-    public Point convertPoint(double longitude, double latitude) throws TransformException {
-        DirectPosition2D source = new DirectPosition2D(sourceCrs, longitude, latitude);
-        DirectPosition target = new DirectPosition2D(targetCrs);
-        engine.transform(source, target);
-        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
-        Coordinate coord = new Coordinate(target.getCoordinate()[0], target.getCoordinate()[1]);
-        return geometryFactory.createPoint(coord);
     }
 
     public Coordinate convertCoordinate(double longitude, double latitude) throws TransformException {
         DirectPosition2D source = new DirectPosition2D(sourceCrs, longitude, latitude);
         DirectPosition target = new DirectPosition2D(targetCrs);
         engine.transform(source, target);
-        Coordinate coord = new Coordinate(target.getCoordinate()[0], target.getCoordinate()[1], 0);
-
+        Coordinate coord = new Coordinate(target.getCoordinate()[1], target.getCoordinate()[0], 0);
         return coord;
     }
 
-    public Point revertPoint(double longitude, double latitude) throws TransformException {
-        DirectPosition2D source = new DirectPosition2D(targetCrs, longitude, latitude);
+    public Coordinate revertCoordinate(double latitude, double longitude) throws TransformException {
+        DirectPosition2D source = new DirectPosition2D(sourceCrs, latitude, longitude);
         DirectPosition target = new DirectPosition2D(sourceCrs);
         reverseEngine.transform(source, target);
-        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
         Coordinate coord = new Coordinate(target.getCoordinate()[0], target.getCoordinate()[1]);
-        return geometryFactory.createPoint(coord);
+        return coord;
     }
 }

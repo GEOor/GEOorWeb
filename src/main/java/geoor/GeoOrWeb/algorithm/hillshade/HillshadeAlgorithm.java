@@ -63,7 +63,7 @@ public class HillshadeAlgorithm {
                 // The rate of change in the x direction for cell e is calculated with the following algorithm
                 // (7) [dz/dx] = ((c + 2f + i) - (a + 2d + g)) / (8 * cellsize)
                 Double derivative_x = ((windows.get('c') + 2 * windows.get('f') + windows.get('i')) -
-                (windows.get('a') + 2 * windows.get('d') + windows.get('g'))) / (8 * 5);
+                        (windows.get('a') + 2 * windows.get('d') + windows.get('g'))) / (8 * 5);
 
                 // The rate of change in the y direction for cell 'e' is calculated with the following algorithm
                 // (8) [dz/dy] = ((g + 2h + i) - (a + 2b + c)) / (8 * cellsize)
@@ -96,10 +96,19 @@ public class HillshadeAlgorithm {
 
                 ArrayList<Double> tmp_grid = new ArrayList<Double>();
 
+                //왼쪽 위, 오른쪽 위, 오른쪽 아래, 왼쪽 아래 (한붓그리기 형태)
                 for(int grid_y = i-1; grid_y <= i+1; grid_y +=2){
-                    for(int grid_x = j-1; grid_x <= j+1; grid_x +=2){
-                        tmp_grid.add(si.get(grid_y).get(grid_x).getLatitude());
-                        tmp_grid.add(si.get(grid_y).get(grid_x).getLongitude());
+                    if(grid_y == i-1) {
+                        for (int grid_x = j - 1; grid_x <= j + 1; grid_x += 2) {
+                            tmp_grid.add(si.get(grid_y).get(grid_x).getLatitude());
+                            tmp_grid.add(si.get(grid_y).get(grid_x).getLongitude());
+                        }
+                    }
+                    else {
+                        for (int grid_x = j + 1; grid_x >= j - 1; grid_x -= 2) {
+                            tmp_grid.add(si.get(grid_y).get(grid_x).getLatitude());
+                            tmp_grid.add(si.get(grid_y).get(grid_x).getLongitude());
+                        }
                     }
                 }
 
