@@ -26,7 +26,7 @@ public class HillshadeAlgorithm {
 
         for(int i=1; i<si.size() - 1; i++){
             ArrayList<Hillshade> row = new ArrayList<Hillshade>(si.get(i).size());
-            Hillshade row_hs = new Hillshade(0D, 0D, 0D, 0D, 0D);
+            Hillshade row_hs = new Hillshade(0D, 0D, 0D, 0D, 0D, new ArrayList<Double>());
             row.add(row_hs);
             for(int j=1; j<si.get(i).size() - 1; j++){
 
@@ -63,7 +63,7 @@ public class HillshadeAlgorithm {
                 // The rate of change in the x direction for cell e is calculated with the following algorithm
                 // (7) [dz/dx] = ((c + 2f + i) - (a + 2d + g)) / (8 * cellsize)
                 Double derivative_x = ((windows.get('c') + 2 * windows.get('f') + windows.get('i')) -
-                (windows.get('a') + 2 * windows.get('d') + windows.get('g'))) / (8 * 5);
+                        (windows.get('a') + 2 * windows.get('d') + windows.get('g'))) / (8 * 5);
 
                 // The rate of change in the y direction for cell 'e' is calculated with the following algorithm
                 // (8) [dz/dy] = ((g + 2h + i) - (a + 2b + c)) / (8 * cellsize)
@@ -94,12 +94,30 @@ public class HillshadeAlgorithm {
                 Double hs_cell = 255.0 * ((Math.cos(Zenith_rad) * Math.cos(Slope_rad)) + (Math.sin(Zenith_rad) * Math.sin(Slope_rad)
                         * Math.cos(Azimuth_rad - Aspect_rad)));
 
+                ArrayList<Double> tmp_grid = new ArrayList<Double>();
+
+                //왼쪽 위, 오른쪽 위, 오른쪽 아래, 왼쪽 아래 (한붓그리기 형태)
+                for(int grid_y = i-1; grid_y <= i+1; grid_y +=2){
+                    if(grid_y == i-1) {
+                        for (int grid_x = j - 1; grid_x <= j + 1; grid_x += 2) {
+                            tmp_grid.add(si.get(grid_y).get(grid_x).getLatitude());
+                            tmp_grid.add(si.get(grid_y).get(grid_x).getLongitude());
+                        }
+                    }
+                    else {
+                        for (int grid_x = j + 1; grid_x >= j - 1; grid_x -= 2) {
+                            tmp_grid.add(si.get(grid_y).get(grid_x).getLatitude());
+                            tmp_grid.add(si.get(grid_y).get(grid_x).getLongitude());
+                        }
+                    }
+                }
+
                 Hillshade hs_xy = new Hillshade(si.get(i).get(j).getX(), si.get(i).get(j).getY(),
-                        si.get(i).get(j).getLatitude(), si.get(i).get(j).getLongitude(), hs_cell);
+                        si.get(i).get(j).getLatitude(), si.get(i).get(j).getLongitude(), hs_cell, tmp_grid);
 
                 row.add(hs_xy);
             }
-            row_hs = new Hillshade(0D, 0D, 0D, 0D, 0D);
+            row_hs = new Hillshade(0D, 0D, 0D, 0D, 0D, new ArrayList<Double>());
             row.add(row_hs);
 
             hs.add(row);

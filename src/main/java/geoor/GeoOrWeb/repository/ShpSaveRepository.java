@@ -1,13 +1,10 @@
 package geoor.GeoOrWeb.repository;
 
-import geoor.GeoOrWeb.algorithm.coordinate.MakePolygon;
 import geoor.GeoOrWeb.model.shp.Shp;
 import org.geotools.feature.FeatureIterator;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.*;
 import org.locationtech.jts.io.WKBWriter;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.referencing.operation.TransformException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,11 +13,8 @@ import java.util.ArrayList;
 
 import static geoor.GeoOrWeb.config.ApplicationProperties.getProperty;
 
-public class ShpRepository {
+public class ShpSaveRepository {
     private final WKBWriter writer = new WKBWriter();
-
-    public ShpRepository() {
-    }
 
     public void save(Connection conn, ArrayList<Shp> shps, ArrayList<String> columns) throws SQLException {
         String insertQuery = getInsertQuery(columns);
@@ -69,29 +63,5 @@ public class ShpRepository {
             pStmt.setObject(i+1, feature.getAttribute(columns.get(i)));
         }
         pStmt.addBatch();
-    }
-
-    public void findOverlapPolygon(Connection conn) throws SQLException {
-        String query = getUpdateQuery();
-        try (PreparedStatement pStmt = conn.prepareStatement(query)) {
-            MakePolygon makePolygon = new MakePolygon();
-            Polygon polygon = makePolygon.test();
-            pStmt.setObject(1, 1234);
-            pStmt.setObject(2, polygon.toString());
-            int updateCount = pStmt.executeUpdate();
-            System.out.println("변경된 row : " + updateCount);
-        } catch (TransformException e) {
-            conn.rollback();
-            e.printStackTrace();
-        }
-    }
-
-    public String getUpdateQuery() {
-        StringBuilder query = new StringBuilder("update ");
-        query.append(getProperty("shp.table"));
-        query.append(" set hillshade = ?");
-        query.append(" where ST_Overlaps(ST_GeometryFromText(?, 5179), SHP.the_geom)");
-        System.out.println(query);
-        return query.toString();
     }
 }

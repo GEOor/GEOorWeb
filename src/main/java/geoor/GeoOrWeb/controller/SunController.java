@@ -41,9 +41,6 @@ public class SunController {
             sunInfoArr.add(resize);
         }
 
-        System.out.println("dem 크기" + "y: " + dem.get(0).size() + "x: " + dem.size());
-        System.out.println("suninfo 크기" + "y: " + sunInfoArr.get(0).size() + "x: " + sunInfoArr.size());
-
         TransformCoordinate tf;
 
         //단위 분배. num : 자르고 싶은 개수
@@ -60,10 +57,10 @@ public class SunController {
                 double dem_y = dem.get(index_x).get(index_y).getY();
 
                 tf = new TransformCoordinate();
-                tf.setX(dem_x); tf.setY(dem_y);
+                tf.setX(dem_y); tf.setY(dem_x);
                 tf.transform();
 
-                crawler.run(tf.getLatitude(), tf.getLongitude(), dem_x, dem_y);
+                crawler.run(tf.getLatitude(), tf.getLongitude(), dem_y, dem_x);
                 ArrayList<SunInfo> si = crawler.get();
 
                 index_x = dem.size() / (i + 1); index_y = dem.get(0).size() / (j + 1);
@@ -73,9 +70,9 @@ public class SunController {
 
                 for(int x=pre_x; x<index_x; x++){
                     for(int y=pre_y; y<index_y;y++){
-                        tf.setX(dem.get(x).get(y).getX()); tf.setY(dem.get(x).get(y).getY());
+                        tf.setX(dem.get(x).get(y).getY()); tf.setY(dem.get(x).get(y).getX());
                         tf.transform();
-                        SunInfo tmp = new SunInfo(dem.get(x).get(y).getX(), dem.get(x).get(y).getY(),
+                        SunInfo tmp = new SunInfo(dem.get(x).get(y).getY(), dem.get(x).get(y).getX(),
                                 tf.getLatitude(), tf.getLongitude(), time, si.get(time).getAzimuth(),
                                 si.get(time).getAltitude(), si.get(time).getAscension(), si.get(time).getDeclination());
                         sunInfoArr.get(x).set(y, tmp);

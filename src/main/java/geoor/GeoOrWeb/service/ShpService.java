@@ -1,10 +1,10 @@
 package geoor.GeoOrWeb.service;
 
-import geoor.GeoOrWeb.algorithm.coordinate.ConvertSRID;
+import geoor.GeoOrWeb.model.hillshade.Hillshade;
 import geoor.GeoOrWeb.model.shp.Shp;
 import geoor.GeoOrWeb.repository.JdbcTemplate;
-import geoor.GeoOrWeb.repository.ShpRepository;
-import org.locationtech.jts.geom.Point;
+import geoor.GeoOrWeb.repository.DemRepository;
+import geoor.GeoOrWeb.repository.ShpSaveRepository;
 
 import java.io.File;
 import java.sql.Connection;
@@ -16,12 +16,14 @@ import static geoor.GeoOrWeb.config.ApplicationProperties.getProperty;
 public class ShpService {
     private ArrayList<Shp> shps = new ArrayList<>();
     private final JdbcTemplate jdbcTemplate;
-    private final ShpRepository shpRepository;
+    private final ShpSaveRepository shpSaveRepository;
+    private final DemRepository demRepository;
 
 
     public ShpService() {
         jdbcTemplate = new JdbcTemplate(getProperty("shp.table"));
-        shpRepository = new ShpRepository();
+        shpSaveRepository = new ShpSaveRepository();
+        demRepository = new DemRepository();
         findShpFiles();
     }
 
@@ -54,23 +56,17 @@ public class ShpService {
         try (Connection conn = jdbcTemplate.getConnection()) {
             // 테이블에서 column 목록 가져옴
             ArrayList<String> columns = jdbcTemplate.getColumns(conn);
-            shpRepository.save(conn, shps, columns);
+            shpSaveRepository.save(conn, shps, columns);
             conn.commit();
         }
     }
 
-    public void demMapping() throws SQLException {
+    // hillshadeArr의 0번 element는 빈 값
+    public void demMapping(ArrayList<Hillshade> hillshadeArr) throws SQLException {
         try (Connection conn = jdbcTemplate.getConnection()) {
-            shpRepository.findOverlapPolygon(conn);
+            demRepository.findOverlapPolygon(conn, hillshadeArr);
+            demRepository.updateHillShade(conn);
             conn.commit();
-        }
-    }
-
-    public void test() {
-        ConvertSRID convertSRID = new ConvertSRID();
-        try {
-            Point point = convertSRID.convertPoint(29.669756415365768, 137.4406806414657);
-        } catch(Exception e) {
         }
     }
 }
