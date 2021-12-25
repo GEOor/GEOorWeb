@@ -12,5 +12,5 @@ import lombok.ToString;
 public class Hazard {
 
     //위도, 경도
-    private Double latitude, longitude;
+    private Double longitude, latitude;
 }

@@ -1,7 +1,9 @@
 package geoor.GeoOrWeb.service;
 
+import geoor.GeoOrWeb.model.hazard.Hazard;
 import geoor.GeoOrWeb.model.hillshade.Hillshade;
 import geoor.GeoOrWeb.model.shp.Shp;
+import geoor.GeoOrWeb.repository.HazardRepository;
 import geoor.GeoOrWeb.repository.JdbcTemplate;
 import geoor.GeoOrWeb.repository.DemRepository;
 import geoor.GeoOrWeb.repository.ShpSaveRepository;
@@ -66,6 +68,14 @@ public class ShpService {
         try (Connection conn = jdbcTemplate.getConnection()) {
             demRepository.findOverlapPolygon(conn, hillshadeArr);
             demRepository.updateHillShade(conn);
+            conn.commit();
+        }
+    }
+
+    public void applyHazard(ArrayList<Hazard> lake, ArrayList<Hazard> turnel) throws SQLException {
+        HazardRepository hazardRepository = new HazardRepository();
+        try (Connection conn = jdbcTemplate.getConnection()) {
+            hazardRepository.applyHazard(conn, lake, turnel);
             conn.commit();
         }
     }

@@ -82,11 +82,11 @@ public class GeoOrWebApplication {
 			shpService.init();
 			// 아래 메소드는 수행하는데 3분정도 소모됨
 			shpService.demMapping(hillshadeArr);
+			shpService.applyHazard(lake, turnel);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		SpringApplication.run(GeoOrWebApplication.class, args);
 	}
-
 }
