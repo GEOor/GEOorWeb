@@ -1,16 +1,21 @@
 package geoor.GeoOrWeb;
 
 import geoor.GeoOrWeb.algorithm.coordinate.TransformCoordinate;
+import geoor.GeoOrWeb.algorithm.hazard.Lake;
+import geoor.GeoOrWeb.algorithm.hazard.Turnel;
 import geoor.GeoOrWeb.algorithm.hillshade.HillshadeAlgorithm;
 import geoor.GeoOrWeb.config.ApplicationProperties;
 import geoor.GeoOrWeb.model.dem.Dem;
+import geoor.GeoOrWeb.model.hazard.Hazard;
 import geoor.GeoOrWeb.model.hillshade.Hillshade;
 import geoor.GeoOrWeb.service.DemService;
 import geoor.GeoOrWeb.service.ShpService;
 import geoor.GeoOrWeb.service.SunService;
+import org.json.simple.parser.ParseException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -25,7 +30,7 @@ public class GeoOrWebApplication {
 	private static ShpService shpService = new ShpService();
 	private static TransformCoordinate tf;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, ParseException {
 
 		/**
 		 dem api 호출 부분
@@ -69,6 +74,9 @@ public class GeoOrWebApplication {
 		}
 
 //		System.out.println(hillshadeArr.toString()); // 테스트 코드
+
+		ArrayList<Hazard> lake = Lake.run();
+		ArrayList<Hazard> turnel = Turnel.run();
 
 		try {
 			shpService.init();
