@@ -47,7 +47,7 @@ public class HazardRepository {
                 e.printStackTrace();
             }
         }
-        System.out.println("update records : " + pStmt.executeBatch().length);
+        pStmt.executeBatch();
         pStmt.clearBatch();
     }
 
