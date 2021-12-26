@@ -112,7 +112,7 @@ public class DemRepository {
                 pStmt.setString(2, roadStatus.getRbid());
                 pStmt.addBatch();
             }
-            System.out.println("update records : " + pStmt.executeBatch().length);
+            pStmt.executeBatch();
             pStmt.clearBatch();
         } catch (SQLException e) {
             conn.rollback();
