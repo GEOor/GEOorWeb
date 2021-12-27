@@ -88,8 +88,8 @@
         // for문 돌면서 각 값의 범위에 따라 색깔 다르게 지정
         var i;
         for(i=0; i<features.length; i++){
-            if(features[i]['values_'].hillshade <= 0) features[i].setStyle(styleRed);
-            else if(features[i]['values_'].hillshade <= 100) features[i].setStyle(styleYellow);
+            if(features[i]['values_'].hillshade <= 50) features[i].setStyle(styleRed);
+            else if(features[i]['values_'].hillshade <= 70) features[i].setStyle(styleYellow);
             else features[i].setStyle(styleGreen);
         }
 

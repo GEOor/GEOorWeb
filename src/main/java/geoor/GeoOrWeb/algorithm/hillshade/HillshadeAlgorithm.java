@@ -93,6 +93,8 @@ public class HillshadeAlgorithm {
 
                 Double hs_cell = 255.0 * ((Math.cos(Zenith_rad) * Math.cos(Slope_rad)) + (Math.sin(Zenith_rad) * Math.sin(Slope_rad)
                         * Math.cos(Azimuth_rad - Aspect_rad)));
+    
+                if(hs_cell < 0) hs_cell = 0.0;
 
                 ArrayList<Double> tmp_grid = new ArrayList<Double>();
 
