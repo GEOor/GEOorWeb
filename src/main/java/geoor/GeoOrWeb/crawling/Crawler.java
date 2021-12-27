@@ -17,7 +17,7 @@ public class Crawler {
 	private String address = "crawl";
 	private Double latitude, longitude;
 	private double x_dir, y_dir;
-	private String date = "2021-11-04";
+	private String date = "2021-12-28";
 	private ArrayList<SunInfo> si = new ArrayList<>();
 	
 	public void run(Double lat, Double lng, double x, double y){
